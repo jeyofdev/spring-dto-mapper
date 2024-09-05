@@ -1,12 +1,15 @@
 package com.jeyofdev.spring_dto_mapper.domain.movie;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Data
 @Entity
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +20,7 @@ public class Movie {
     private String title;
 
     @Column(name = "country")
-    private int country;
+    private String country;
 
     @Column(name = "year")
     private int year;

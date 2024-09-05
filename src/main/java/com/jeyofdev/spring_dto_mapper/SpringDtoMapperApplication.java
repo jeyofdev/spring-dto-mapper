@@ -7,8 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringDtoMapperApplication {
 
 	public static void main(String[] args) {
-
 		SpringApplication.run(SpringDtoMapperApplication.class, args);
-		System.out.println("hello world app");
 	}
 }
