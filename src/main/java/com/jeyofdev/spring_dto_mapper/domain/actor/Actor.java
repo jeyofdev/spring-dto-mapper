@@ -38,5 +38,5 @@ public class Actor {
 
     @ManyToMany(mappedBy = "actorList", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("actorList")
-    private List<Movie> movies = new ArrayList<>();
+    private List<Movie> movieList = new ArrayList<>();
 }

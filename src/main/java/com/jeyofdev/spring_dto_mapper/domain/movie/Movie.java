@@ -39,6 +39,7 @@ public class Movie {
     @JoinTable(name = "movie_actor",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "actor_id"))
+    @JsonIgnoreProperties("movieList")
     private List<Actor> actorList;
 
     @ManyToOne(cascade = CascadeType.ALL)
