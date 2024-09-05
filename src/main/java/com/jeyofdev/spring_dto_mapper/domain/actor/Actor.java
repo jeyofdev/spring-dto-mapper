@@ -1,12 +1,14 @@
 package com.jeyofdev.spring_dto_mapper.domain.actor;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "actor")
 public class Actor {
     @Id
@@ -18,14 +20,14 @@ public class Actor {
     private String name;
 
     @Column(name = "country")
-    private int country;
+    private String country;
 
     @Column(name = "age")
     private int age;
 
     @Column(name = "gender")
-    private double gender;
+    private String gender;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "biography")
+    private String biography;
 }
