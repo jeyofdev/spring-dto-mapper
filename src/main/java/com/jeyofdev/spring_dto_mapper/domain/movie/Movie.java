@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -40,7 +41,7 @@ public class Movie {
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "actor_id"))
     @JsonIgnoreProperties("movieList")
-    private List<Actor> actorList;
+    private List<Actor> actorList = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("movieList")

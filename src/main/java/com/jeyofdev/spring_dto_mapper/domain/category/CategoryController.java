@@ -1,5 +1,7 @@
 package com.jeyofdev.spring_dto_mapper.domain.category;
 
+import com.jeyofdev.spring_dto_mapper.domain.category.dto.CategoryDTO;
+import com.jeyofdev.spring_dto_mapper.domain.category.dto.SaveCategoryDTO;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,28 +30,37 @@ public class CategoryController {
     }*/
 
     @PostMapping
-    public ResponseEntity<Category> addNewCategory(@RequestBody Category newCategory) {
-        Category createdCategory = categoryService.save(newCategory);
+    public ResponseEntity<CategoryDTO> addNewCategory(@RequestBody SaveCategoryDTO saveCategoryDTO) {
+        Category category = CategoryMapper.mapToEntity(saveCategoryDTO);
+        Category createdCategory = categoryService.save(category);
+        CategoryDTO categoryDTO = CategoryMapper.mapFromEntity(createdCategory, true);
 
-        return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
+        return new ResponseEntity<>(categoryDTO, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Category>> getAllCategories() {
+    public ResponseEntity<List<CategoryDTO>> getAllCategories() {
         List<Category> categoryList = categoryService.findAll();
-        return new ResponseEntity<>(categoryList, HttpStatus.OK);
+        List<CategoryDTO> categoriesDTO = categoryList.stream().map(category -> CategoryMapper.mapFromEntity(category, false)).toList();
+
+        return new ResponseEntity<>(categoriesDTO, HttpStatus.OK);
     }
 
     @GetMapping("/{categoryId}")
-    public ResponseEntity<Category> getCategory(@PathVariable("categoryId") Long categoryId) {
+    public ResponseEntity<CategoryDTO> getCategory(@PathVariable("categoryId") Long categoryId) {
         Category category = categoryService.findById(categoryId);
-        return new ResponseEntity<>(category, HttpStatus.FOUND);
+        CategoryDTO categoryDTO = CategoryMapper.mapFromEntity(category, true);
+
+        return new ResponseEntity<>(categoryDTO, HttpStatus.FOUND);
     }
 
     @PutMapping("/{categoryId}")
-    public ResponseEntity<Category> updateCategory(@PathVariable("categoryId") Long categoryId, @RequestBody Category newCategoryData) {
-        Category createdCategory = categoryService.updateById(categoryId, newCategoryData);
-        return new ResponseEntity<>(createdCategory, HttpStatus.OK);
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable("categoryId") Long categoryId, @RequestBody SaveCategoryDTO saveCategoryDTO) {
+        Category category = CategoryMapper.mapToEntity(saveCategoryDTO);
+        Category updatedCategory = categoryService.updateById(categoryId, category);
+        CategoryDTO categoryDTO = CategoryMapper.mapFromEntity(updatedCategory, true);
+
+        return new ResponseEntity<>(categoryDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/{categoryId}")

@@ -1,5 +1,7 @@
 package com.jeyofdev.spring_dto_mapper.domain.actor;
 
+import com.jeyofdev.spring_dto_mapper.domain.actor.dto.ActorDTO;
+import com.jeyofdev.spring_dto_mapper.domain.actor.dto.SaveActorDTO;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,27 +28,37 @@ public class ActorController {
     }*/
 
     @PostMapping
-    public ResponseEntity<Actor> addNewActor(@RequestBody Actor newActor) {
-        Actor createdActor = actorService.save(newActor);
-        return new ResponseEntity<>(createdActor, HttpStatus.CREATED);
+    public ResponseEntity<ActorDTO> addNewActor(@RequestBody SaveActorDTO saveActorDTO) {
+        Actor actor = ActorMapper.mapToEntity(saveActorDTO);
+        Actor createdActor = actorService.save(actor);
+        ActorDTO actorDTO = ActorMapper.mapFromEntity(createdActor, true);
+
+        return new ResponseEntity<>(actorDTO, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Actor>> getAllActors() {
+    public ResponseEntity<List<ActorDTO>> getAllActors() {
         List<Actor> actorList = actorService.findAll();
-        return new ResponseEntity<>(actorList, HttpStatus.OK);
+        List<ActorDTO> actorListDTO = actorList.stream().map(actor -> ActorMapper.mapFromEntity(actor, false)).toList();
+
+        return new ResponseEntity<>(actorListDTO, HttpStatus.OK);
     }
 
     @GetMapping("/{actorId}")
-    public ResponseEntity<Actor> getActor(@PathVariable("actorId") Long actorId) {
+    public ResponseEntity<ActorDTO> getActor(@PathVariable("actorId") Long actorId) {
         Actor actor = actorService.findById(actorId);
-        return new ResponseEntity<>(actor, HttpStatus.FOUND);
+        ActorDTO actorDTO = ActorMapper.mapFromEntity(actor, true);
+
+        return new ResponseEntity<>(actorDTO, HttpStatus.FOUND);
     }
 
     @PutMapping("/{actorId}")
-    public ResponseEntity<Actor> updateActor(@PathVariable("actorId") Long actorId, @RequestBody Actor newActorData) {
-        Actor createdActor = actorService.updateById(actorId, newActorData);
-        return new ResponseEntity<>(createdActor, HttpStatus.OK);
+    public ResponseEntity<ActorDTO> updateActor(@PathVariable("actorId") Long actorId, @RequestBody SaveActorDTO saveActorDTO) {
+        Actor actor = ActorMapper.mapToEntity(saveActorDTO);
+        Actor updatedActor = actorService.updateById(actorId, actor);
+        ActorDTO actorDTO = ActorMapper.mapFromEntity(updatedActor, true);
+
+        return new ResponseEntity<>(actorDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/{actorId}")

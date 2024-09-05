@@ -1,6 +1,7 @@
 package com.jeyofdev.spring_dto_mapper.domain.movie;
 
-import jakarta.annotation.PostConstruct;
+import com.jeyofdev.spring_dto_mapper.domain.movie.dto.MovieDTO;
+import com.jeyofdev.spring_dto_mapper.domain.movie.dto.SaveMovieDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,28 +25,37 @@ public class MovieController {
     }*/
 
     @PostMapping
-    public ResponseEntity<Movie> addNewMovie(@RequestBody Movie newMovie) {
-        Movie createdMovie = movieService.save(newMovie);
+    public ResponseEntity<MovieDTO> addNewMovie(@RequestBody SaveMovieDto saveMovieDTO) {
+        Movie movie = MovieMapper.mapToEntity(saveMovieDTO);
+        Movie createdMovie = movieService.save(movie);
+        MovieDTO createdMovieDTO = MovieMapper.mapFromEntity(createdMovie, true, true);
 
-        return new ResponseEntity<>(createdMovie, HttpStatus.CREATED);
+        return new ResponseEntity<>(createdMovieDTO, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Movie>> getAllMovies() {
+    public ResponseEntity<List<MovieDTO>> getAllMovies() {
         List<Movie> movieList = movieService.findAll();
-        return new ResponseEntity<>(movieList, HttpStatus.OK);
+        List<MovieDTO> moviesDto = movieList.stream().map(movie -> MovieMapper.mapFromEntity(movie, false, false)).toList();
+
+        return new ResponseEntity<>(moviesDto, HttpStatus.OK);
     }
 
     @GetMapping("/{movieId}")
-    public ResponseEntity<Movie> getMovie(@PathVariable("movieId") Long movieId) {
+    public ResponseEntity<MovieDTO> getMovie(@PathVariable("movieId") Long movieId) {
         Movie movie = movieService.findById(movieId);
-        return new ResponseEntity<>(movie, HttpStatus.FOUND);
+        MovieDTO movieDto = MovieMapper.mapFromEntity(movie, true, true);
+
+        return new ResponseEntity<>(movieDto, HttpStatus.FOUND);
     }
 
     @PutMapping("/{movieId}")
-    public ResponseEntity<Movie> updateMovie(@PathVariable("movieId") Long movieId, @RequestBody Movie newMovieData) {
-        Movie createdMovie = movieService.updateById(movieId, newMovieData);
-        return new ResponseEntity<>(createdMovie, HttpStatus.OK);
+    public ResponseEntity<MovieDTO> updateMovie(@PathVariable("movieId") Long movieId, @RequestBody SaveMovieDto saveMovieDTO) {
+        Movie movie = MovieMapper.mapToEntity(saveMovieDTO);
+        Movie updatedMovie = movieService.updateById(movieId, movie);
+        MovieDTO updatedMovieDTO = MovieMapper.mapFromEntity(updatedMovie, true, true);
+
+        return new ResponseEntity<>(updatedMovieDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/{movieId}")
@@ -55,20 +65,25 @@ public class MovieController {
     }
 
     @PostMapping("/{movieId}/actor/{actorId}")
-    public ResponseEntity<Movie> addActorToMovie(@PathVariable("movieId") Long movieId, @PathVariable("actorId") Long actorId) {
+    public ResponseEntity<MovieDTO> addActorToMovie(@PathVariable("movieId") Long movieId, @PathVariable("actorId") Long actorId) {
         Movie movie = movieService.addActor(movieId, actorId);
-        return new ResponseEntity<>(movie, HttpStatus.OK);
+        MovieDTO movieDTO = MovieMapper.mapFromEntity(movie, true, true);
+
+        return new ResponseEntity<>(movieDTO, HttpStatus.OK);
     }
 
     @PutMapping("/{movieId}/category/{categoryId}")
-    public ResponseEntity<Movie> updateCategoryToMovie(@PathVariable("movieId") Long movieId, @PathVariable("categoryId") Long categoryId) {
+    public ResponseEntity<MovieDTO> updateCategoryToMovie(@PathVariable("movieId") Long movieId, @PathVariable("categoryId") Long categoryId) {
         Movie movie = movieService.updateCategory(movieId, categoryId);
-        return new ResponseEntity<>(movie, HttpStatus.OK);
+        MovieDTO movieDTO = MovieMapper.mapFromEntity(movie, true, true);
+        return new ResponseEntity<>(movieDTO, HttpStatus.OK);
     }
 
     @PutMapping("/{movieId}/actor/{actorId}")
-    public ResponseEntity<Movie> removeActorToMovie(@PathVariable("movieId") Long movieId, @PathVariable("actorId") Long actorId) {
+    public ResponseEntity<MovieDTO> removeActorToMovie(@PathVariable("movieId") Long movieId, @PathVariable("actorId") Long actorId) {
         Movie movie = movieService.removeActor(movieId, actorId);
-        return new ResponseEntity<>(movie, HttpStatus.OK);
+        MovieDTO movieDTO = MovieMapper.mapFromEntity(movie, true, true);
+
+        return new ResponseEntity<>(movieDTO, HttpStatus.OK);
     }
 }
