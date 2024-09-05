@@ -1,10 +1,14 @@
 package com.jeyofdev.spring_dto_mapper.domain.movie;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.jeyofdev.spring_dto_mapper.domain.actor.Actor;
+import com.jeyofdev.spring_dto_mapper.domain.category.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -30,4 +34,14 @@ public class Movie {
 
     @Column(name = "synopsys")
     private String synopsys;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "movie_actor",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "actor_id"))
+    private List<Actor> actorList;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("movieList")
+    private Category category;
 }

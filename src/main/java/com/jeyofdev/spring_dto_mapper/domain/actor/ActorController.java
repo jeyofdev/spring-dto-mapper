@@ -14,7 +14,7 @@ import java.util.List;
 public class ActorController {
     private final ActorService actorService;
 
-    @PostConstruct
+    /*@PostConstruct
     public void init() {
         Actor actor1 = new Actor(1L, "Al Pacino", "USA", 84, "male", "Alfredo James Pacino (born April 25, 1940) is an American actor and filmmaker.");
         Actor actor2 = new Actor(2L, "John Travolta", "USA", 70, "male", "John Joseph Travolta (born February 18, 1954) is an American actor, film producer, dancer, and singer.");
@@ -23,7 +23,7 @@ public class ActorController {
         actorService.save(actor1);
         actorService.save(actor2);
         actorService.save(actor3);
-    }
+    }*/
 
     @PostMapping
     public ResponseEntity<Actor> addNewActor(@RequestBody Actor newActor) {

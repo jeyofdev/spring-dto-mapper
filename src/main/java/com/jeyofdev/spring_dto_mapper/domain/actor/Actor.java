@@ -1,9 +1,14 @@
 package com.jeyofdev.spring_dto_mapper.domain.actor;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.jeyofdev.spring_dto_mapper.domain.movie.Movie;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -30,4 +35,8 @@ public class Actor {
 
     @Column(name = "biography")
     private String biography;
+
+    @ManyToMany(mappedBy = "actorList", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("actorList")
+    private List<Movie> movies = new ArrayList<>();
 }

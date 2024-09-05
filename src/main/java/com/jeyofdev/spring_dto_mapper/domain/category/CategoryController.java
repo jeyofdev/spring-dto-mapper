@@ -14,7 +14,7 @@ import java.util.List;
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @PostConstruct
+    /*@PostConstruct
     public void init() {
         Category category1 = new Category(1L, "Adventure");
         Category category2 = new Category(2L, "Action");
@@ -25,7 +25,7 @@ public class CategoryController {
         categoryService.save(category2);
         categoryService.save(category3);
         categoryService.save(category4);
-    }
+    }*/
 
     @PostMapping
     public ResponseEntity<Category> addNewCategory(@RequestBody Category newCategory) {
