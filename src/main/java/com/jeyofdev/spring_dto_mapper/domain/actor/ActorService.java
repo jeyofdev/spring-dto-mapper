@@ -1,42 +1,29 @@
 package com.jeyofdev.spring_dto_mapper.domain.actor;
 
-import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
+import com.jeyofdev.spring_dto_mapper.common.AbstractDomainService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-@RequiredArgsConstructor
-public class ActorService {
+public class ActorService extends AbstractDomainService<Actor> {
     private final ActorRepository actorRepository;
 
-    public Actor save(Actor actor) {
-        return actorRepository.save(actor);
+    @Autowired
+    public ActorService(ActorRepository  actorRepository) {
+        super(actorRepository, "actor");
+        this.actorRepository = actorRepository;
     }
 
-    public List<Actor> findAll() {
-        return actorRepository.findAll();
-    }
+    @Override
+    public Actor updateById(Long entityId, Actor updateEntityData) {
+        Actor currentActor = findById(entityId);
 
-    public Actor findById(Long actorId) {
-        return actorRepository.findById(actorId).orElseThrow(() -> new EntityNotFoundException("Actor with id " + actorId + " cannot be found"));
-    }
-
-    public Actor updateById(Long actorId, Actor updateActorData) {
-        Actor currentActor = findById(actorId);
-
-        currentActor.setName(updateActorData.getName());
-        currentActor.setCountry(updateActorData.getCountry());
-        currentActor.setAge(updateActorData.getAge());
-        currentActor.setGender(updateActorData.getGender());
-        currentActor.setBiography(updateActorData.getBiography());
+        currentActor.setName(updateEntityData.getName());
+        currentActor.setCountry(updateEntityData.getCountry());
+        currentActor.setAge(updateEntityData.getAge());
+        currentActor.setGender(updateEntityData.getGender());
+        currentActor.setBiography(updateEntityData.getBiography());
 
         return actorRepository.save(currentActor);
-    }
-
-    public String deleteById(Long actorId) {
-        actorRepository.deleteById(actorId);
-        return "Actor with id " + actorId + " deleted";
     }
 }

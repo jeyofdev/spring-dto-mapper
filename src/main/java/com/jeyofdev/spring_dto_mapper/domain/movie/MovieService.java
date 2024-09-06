@@ -1,34 +1,28 @@
 package com.jeyofdev.spring_dto_mapper.domain.movie;
 
+import com.jeyofdev.spring_dto_mapper.common.AbstractDomainService;
 import com.jeyofdev.spring_dto_mapper.domain.actor.Actor;
 import com.jeyofdev.spring_dto_mapper.domain.actor.ActorService;
 import com.jeyofdev.spring_dto_mapper.domain.category.Category;
 import com.jeyofdev.spring_dto_mapper.domain.category.CategoryService;
-import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-@RequiredArgsConstructor
-public class MovieService {
+public class MovieService extends AbstractDomainService<Movie> {
     private final MovieRepository movieRepository;
     private final ActorService actorService;
     private final CategoryService categoryService;
 
-    public Movie save(Movie movie) {
-        return movieRepository.save(movie);
+    @Autowired
+    public MovieService(MovieRepository movieRepository, ActorService actorService, CategoryService categoryService) {
+        super(movieRepository, "movie");
+        this.movieRepository = movieRepository;
+        this.actorService = actorService;
+        this.categoryService = categoryService;
     }
 
-    public List<Movie> findAll() {
-        return movieRepository.findAll();
-    }
-
-    public Movie findById(Long movieId) {
-        return movieRepository.findById(movieId).orElseThrow(() -> new EntityNotFoundException("Movie with id " + movieId + " cannot be found"));
-    }
-
+    @Override
     public Movie updateById(Long movieId, Movie updateMovieData) {
         Movie currentActor = findById(movieId);
 
@@ -39,11 +33,6 @@ public class MovieService {
         currentActor.setSynopsys(updateMovieData.getSynopsys());
 
         return movieRepository.save(currentActor);
-    }
-
-    public String deleteById(Long movieId) {
-        movieRepository.deleteById(movieId);
-        return "Movie with id " + movieId + " deleted";
     }
 
     public Movie addActor(Long movieId, Long actorId) {
