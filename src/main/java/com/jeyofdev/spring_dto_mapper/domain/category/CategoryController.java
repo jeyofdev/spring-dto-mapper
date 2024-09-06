@@ -15,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
+    private final CategoryMapper categoryMapper;
 
     /*@PostConstruct
     public void init() {
@@ -31,9 +32,9 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<CategoryDTO> addNewCategory(@RequestBody SaveCategoryDTO saveCategoryDTO) {
-        Category category = CategoryMapper.mapToEntity(saveCategoryDTO);
+        Category category = categoryMapper.mapToEntity(saveCategoryDTO);
         Category createdCategory = categoryService.save(category);
-        CategoryDTO categoryDTO = CategoryMapper.mapFromEntity(createdCategory, true);
+        CategoryDTO categoryDTO = categoryMapper.mapFromEntity(createdCategory, true);
 
         return new ResponseEntity<>(categoryDTO, HttpStatus.CREATED);
     }
@@ -41,7 +42,7 @@ public class CategoryController {
     @GetMapping
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {
         List<Category> categoryList = categoryService.findAll();
-        List<CategoryDTO> categoriesDTO = categoryList.stream().map(category -> CategoryMapper.mapFromEntity(category, false)).toList();
+        List<CategoryDTO> categoriesDTO = categoryList.stream().map(category -> categoryMapper.mapFromEntity(category, false)).toList();
 
         return new ResponseEntity<>(categoriesDTO, HttpStatus.OK);
     }
@@ -49,16 +50,16 @@ public class CategoryController {
     @GetMapping("/{categoryId}")
     public ResponseEntity<CategoryDTO> getCategory(@PathVariable("categoryId") Long categoryId) {
         Category category = categoryService.findById(categoryId);
-        CategoryDTO categoryDTO = CategoryMapper.mapFromEntity(category, true);
+        CategoryDTO categoryDTO = categoryMapper.mapFromEntity(category, true);
 
         return new ResponseEntity<>(categoryDTO, HttpStatus.FOUND);
     }
 
     @PutMapping("/{categoryId}")
     public ResponseEntity<CategoryDTO> updateCategory(@PathVariable("categoryId") Long categoryId, @RequestBody SaveCategoryDTO saveCategoryDTO) {
-        Category category = CategoryMapper.mapToEntity(saveCategoryDTO);
+        Category category = categoryMapper.mapToEntity(saveCategoryDTO);
         Category updatedCategory = categoryService.updateById(categoryId, category);
-        CategoryDTO categoryDTO = CategoryMapper.mapFromEntity(updatedCategory, true);
+        CategoryDTO categoryDTO = categoryMapper.mapFromEntity(updatedCategory, true);
 
         return new ResponseEntity<>(categoryDTO, HttpStatus.OK);
     }

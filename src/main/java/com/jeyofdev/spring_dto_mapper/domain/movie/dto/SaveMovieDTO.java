@@ -1,6 +1,6 @@
 package com.jeyofdev.spring_dto_mapper.domain.movie.dto;
 
-public record SaveMovieDto(
+public record SaveMovieDTO(
         String title,
         String country,
         Integer year,

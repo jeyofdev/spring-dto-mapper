@@ -1,13 +1,21 @@
 package com.jeyofdev.spring_dto_mapper.domain.actor;
 
+import com.jeyofdev.spring_dto_mapper.common.BaseDomainMapper;
 import com.jeyofdev.spring_dto_mapper.domain.actor.dto.ActorDTO;
 import com.jeyofdev.spring_dto_mapper.domain.actor.dto.SaveActorDTO;
 import com.jeyofdev.spring_dto_mapper.domain.movie.MovieMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
 
-public class ActorMapper {
-    public static ActorDTO mapFromEntity(Actor actor, boolean includeRelation) {
+@Service
+@RequiredArgsConstructor
+public class ActorMapper implements BaseDomainMapper<Actor, ActorDTO, SaveActorDTO> {
+    private final MovieMapper movieMapper;
+
+    @Override
+    public ActorDTO mapFromEntity(Actor actor, boolean... args) {
         return new ActorDTO(
                 actor.getId(),
                 actor.getName(),
@@ -15,15 +23,16 @@ public class ActorMapper {
                 actor.getAge(),
                 actor.getGender(),
                 actor.getBiography(),
-                includeRelation ?
+                args.length == 1 && args[0] ?
                         actor.getMovieList().stream()
-                                .map(movie -> MovieMapper.mapFromEntity(movie, false, false))
+                                .map(movie -> movieMapper.mapFromEntity(movie, false, false))
                                 .collect(Collectors.toList())
                         : null
         );
     }
 
-    public static Actor mapToEntity(SaveActorDTO saveActorDTO) {
+    @Override
+    public Actor mapToEntity(SaveActorDTO saveActorDTO) {
         Actor actor = new Actor();
         actor.setName(saveActorDTO.name());
         actor.setCountry(saveActorDTO.country());

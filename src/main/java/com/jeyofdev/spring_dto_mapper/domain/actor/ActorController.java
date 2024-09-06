@@ -15,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ActorController {
     private final ActorService actorService;
+    private final ActorMapper actorMapper;
 
     /*@PostConstruct
     public void init() {
@@ -29,9 +30,9 @@ public class ActorController {
 
     @PostMapping
     public ResponseEntity<ActorDTO> addNewActor(@RequestBody SaveActorDTO saveActorDTO) {
-        Actor actor = ActorMapper.mapToEntity(saveActorDTO);
+        Actor actor = actorMapper.mapToEntity(saveActorDTO);
         Actor createdActor = actorService.save(actor);
-        ActorDTO actorDTO = ActorMapper.mapFromEntity(createdActor, true);
+        ActorDTO actorDTO = actorMapper.mapFromEntity(createdActor, true);
 
         return new ResponseEntity<>(actorDTO, HttpStatus.CREATED);
     }
@@ -39,7 +40,7 @@ public class ActorController {
     @GetMapping
     public ResponseEntity<List<ActorDTO>> getAllActors() {
         List<Actor> actorList = actorService.findAll();
-        List<ActorDTO> actorListDTO = actorList.stream().map(actor -> ActorMapper.mapFromEntity(actor, false)).toList();
+        List<ActorDTO> actorListDTO = actorList.stream().map(actor -> actorMapper.mapFromEntity(actor, false)).toList();
 
         return new ResponseEntity<>(actorListDTO, HttpStatus.OK);
     }
@@ -47,16 +48,16 @@ public class ActorController {
     @GetMapping("/{actorId}")
     public ResponseEntity<ActorDTO> getActor(@PathVariable("actorId") Long actorId) {
         Actor actor = actorService.findById(actorId);
-        ActorDTO actorDTO = ActorMapper.mapFromEntity(actor, true);
+        ActorDTO actorDTO = actorMapper.mapFromEntity(actor, true);
 
         return new ResponseEntity<>(actorDTO, HttpStatus.FOUND);
     }
 
     @PutMapping("/{actorId}")
     public ResponseEntity<ActorDTO> updateActor(@PathVariable("actorId") Long actorId, @RequestBody SaveActorDTO saveActorDTO) {
-        Actor actor = ActorMapper.mapToEntity(saveActorDTO);
+        Actor actor = actorMapper.mapToEntity(saveActorDTO);
         Actor updatedActor = actorService.updateById(actorId, actor);
-        ActorDTO actorDTO = ActorMapper.mapFromEntity(updatedActor, true);
+        ActorDTO actorDTO = actorMapper.mapFromEntity(updatedActor, true);
 
         return new ResponseEntity<>(actorDTO, HttpStatus.OK);
     }
