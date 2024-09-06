@@ -2,7 +2,6 @@ package com.jeyofdev.spring_dto_mapper.domain.actor;
 
 import com.jeyofdev.spring_dto_mapper.domain.actor.dto.ActorDTO;
 import com.jeyofdev.spring_dto_mapper.domain.actor.dto.SaveActorDTO;
-import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,17 +16,6 @@ import java.util.List;
 public class ActorController {
     private final ActorService actorService;
     private final ActorMapper actorMapper;
-
-    /*@PostConstruct
-    public void init() {
-        Actor actor1 = new Actor(1L, "Al Pacino", "USA", 84, "male", "Alfredo James Pacino (born April 25, 1940) is an American actor and filmmaker.");
-        Actor actor2 = new Actor(2L, "John Travolta", "USA", 70, "male", "John Joseph Travolta (born February 18, 1954) is an American actor, film producer, dancer, and singer.");
-        Actor actor3 = new Actor(3L, "Uma Thurman", "USA", 54, "female", "Uma Karuna Thurman (née le 29 avril 1970) est une actrice et mannequin américaine.");
-
-        actorService.save(actor1);
-        actorService.save(actor2);
-        actorService.save(actor3);
-    }*/
 
     @PostMapping
     public ResponseEntity<ActorDTO> addNewActor(@Valid @RequestBody SaveActorDTO saveActorDTO) {

@@ -44,7 +44,6 @@ public class Actor {
     @NotNull(message = "The gender is required.")
     private Gender gender;
 
-    @Lob
     @Column(name = "biography")
     @NotEmpty(message = "The biography is required.")
     private String biography;

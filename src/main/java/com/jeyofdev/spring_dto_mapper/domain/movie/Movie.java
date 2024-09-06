@@ -41,7 +41,6 @@ public class Movie {
     @Max(value = 10, message ="The year is required and must be less than or equal to 10.")
     private double rating;
 
-    @Lob
     @Column(name = "synopsys")
     @NotEmpty(message = "The synopsys is required.")
     private String synopsys;

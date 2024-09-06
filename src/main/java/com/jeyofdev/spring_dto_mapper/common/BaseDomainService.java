@@ -1,7 +1,5 @@
 package com.jeyofdev.spring_dto_mapper.common;
 
-import com.jeyofdev.spring_dto_mapper.domain.actor.Actor;
-
 import java.util.List;
 
 public interface BaseDomainService<T> {

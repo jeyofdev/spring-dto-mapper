@@ -2,7 +2,6 @@ package com.jeyofdev.spring_dto_mapper.domain.category;
 
 import com.jeyofdev.spring_dto_mapper.domain.category.dto.CategoryDTO;
 import com.jeyofdev.spring_dto_mapper.domain.category.dto.SaveCategoryDTO;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,19 +15,6 @@ import java.util.List;
 public class CategoryController {
     private final CategoryService categoryService;
     private final CategoryMapper categoryMapper;
-
-    /*@PostConstruct
-    public void init() {
-        Category category1 = new Category(1L, "Adventure");
-        Category category2 = new Category(2L, "Action");
-        Category category3 = new Category(3L, "Thriller");
-        Category category4 = new Category(4L, "Crime");
-
-        categoryService.save(category1);
-        categoryService.save(category2);
-        categoryService.save(category3);
-        categoryService.save(category4);
-    }*/
 
     @PostMapping
     public ResponseEntity<CategoryDTO> addNewCategory(@RequestBody SaveCategoryDTO saveCategoryDTO) {
