@@ -3,6 +3,7 @@ package com.jeyofdev.spring_dto_mapper.domain.actor;
 import com.jeyofdev.spring_dto_mapper.domain.actor.dto.ActorDTO;
 import com.jeyofdev.spring_dto_mapper.domain.actor.dto.SaveActorDTO;
 import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class ActorController {
     }*/
 
     @PostMapping
-    public ResponseEntity<ActorDTO> addNewActor(@RequestBody SaveActorDTO saveActorDTO) {
+    public ResponseEntity<ActorDTO> addNewActor(@Valid @RequestBody SaveActorDTO saveActorDTO) {
         Actor actor = actorMapper.mapToEntity(saveActorDTO);
         Actor createdActor = actorService.save(actor);
         ActorDTO actorDTO = actorMapper.mapFromEntity(createdActor, true);
