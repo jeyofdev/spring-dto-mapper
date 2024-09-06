@@ -5,8 +5,6 @@ import com.jeyofdev.spring_dto_mapper.domain.category.dto.CategoryDTO;
 import com.jeyofdev.spring_dto_mapper.domain.movie.dto.MovieDTO;
 import com.jeyofdev.spring_dto_mapper.domain.movie.dto.SaveMovieDto;
 
-import java.util.ArrayList;
-
 public class MovieMapper {
     public static MovieDTO mapFromEntity(Movie movie, boolean includeActors, boolean includeCategory) {
         return new MovieDTO(
