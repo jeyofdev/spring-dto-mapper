@@ -81,6 +81,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>spring-dto-mapper</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
