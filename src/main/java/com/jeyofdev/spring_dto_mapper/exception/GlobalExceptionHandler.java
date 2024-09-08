@@ -17,11 +17,13 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    // when entity is not found
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException exception, HttpServletRequest request) {
         return handleException(exception, HttpStatus.NOT_FOUND, request);
     }
 
+    // when data constraint validation failed
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Map<String, String>> handleConstraintViolationException(ConstraintViolationException exception) {
         Map<String, String> errors = new HashMap<>();
@@ -38,6 +40,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
+    // when errors occur when reading,
+    // writing, or accessing files, networks, data streams,
+    // or other input/output resources
     @ExceptionHandler(IOException.class)
     public ResponseEntity<Map<String, String>> handleIOException(IOException exception) {
         Map<String, String> errors = new HashMap<>();
@@ -46,13 +51,24 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
+    // when trying to access an object that does not exist
+    // missing or malformed
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception, HttpServletRequest request) {
         Map<String, String> errors = new HashMap<>();
-        errors.put("error", "Malformed JSON request: " + exception.getMessage());
+
+        // Check if the error is for a missing request body
+        if (exception.getMessage() != null && exception.getMessage().contains("Required request body is missing")) {
+            errors.put("error", "Request body is missing or malformed");
+        } else {
+            errors.put("error", "Malformed JSON request: " + exception.getMessage());
+        }
+
         return new ResponseEntity<>(errors, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
+    // when trying to access an object that is not initialized
+    // and value is null
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<Map<String, String>> handleNullPointerException(NullPointerException exception, HttpServletRequest request) {
         Map<String, String> errors = new HashMap<>();
@@ -60,11 +76,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
+    // when invalid or inappropriate argument.
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException exception, HttpServletRequest request) {
+        return handleException(exception, HttpStatus.CONFLICT, request);
+    }
+
+    // others
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleException(Exception exception, HttpServletRequest request) {
         return handleException(exception, HttpStatus.BAD_REQUEST, request);
     }
-
 
     private ResponseEntity<ErrorResponse> handleException(Exception exception, HttpStatus status, HttpServletRequest request) {
         exception.printStackTrace();

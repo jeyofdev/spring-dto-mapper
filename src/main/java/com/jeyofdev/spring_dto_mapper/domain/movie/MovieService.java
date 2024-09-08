@@ -39,8 +39,11 @@ public class MovieService extends AbstractDomainService<Movie> {
         Movie movie = findById(movieId);
         Actor actor = actorService.findById(actorId);
 
-        movie.getActorList().add(actor);
+        if (movie.getActorList().contains(actor)) {
+            throw new IllegalArgumentException("The actor with the id " + actorId + " is already associated with the movie with the id " + movieId + ".");
+        }
 
+        movie.getActorList().add(actor);
         return movieRepository.save(movie);
     }
 
@@ -48,8 +51,11 @@ public class MovieService extends AbstractDomainService<Movie> {
         Movie movie = findById(movieId);
         Category category = categoryService.findById(categoryId);
 
-        movie.setCategory(category);
+        if(movie.getCategory().equals(category)) {
+            throw new IllegalArgumentException("The Category with the id " + categoryId + " is already associated with the movie with the id " + movieId + ".");
+        }
 
+        movie.setCategory(category);
         return movieRepository.save(movie);
     }
 
@@ -57,8 +63,11 @@ public class MovieService extends AbstractDomainService<Movie> {
         Movie movie = findById(movieId);
         Actor actor = actorService.findById(actorId);
 
-        movie.getActorList().remove(actor);
+        if (!movie.getActorList().contains(actor)) {
+            throw new IllegalArgumentException("The actor with the id " + actorId + " is not associated with the movie with the id " + movieId + ".");
+        }
 
+        movie.getActorList().remove(actor);
         return movieRepository.save(movie);
     }
 }

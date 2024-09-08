@@ -35,6 +35,7 @@ public abstract class AbstractDomainService<T> implements BaseDomainService<T> {
 
     @Override
     public String deleteById(Long entityId) {
+        findById(entityId);
         repository.deleteById(entityId);
         return entityName + " with id " + entityId + " deleted";
     }
