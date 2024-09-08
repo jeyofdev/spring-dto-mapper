@@ -48,7 +48,7 @@ public class Actor {
     @NotEmpty(message = "The biography is required.")
     private String biography;
 
-    @ManyToMany(mappedBy = "actorList", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "actorList", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JsonIgnoreProperties("actorList")
     private List<Movie> movieList = new ArrayList<>();
 }
