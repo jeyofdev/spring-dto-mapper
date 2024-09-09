@@ -17,8 +17,7 @@
 	<img src="https://img.shields.io/badge/spring-%236DB33F.svg?style=flat-square&logo=spring&logoColor=white" alt="Spring">
 	<img src="https://img.shields.io/badge/Apache%20Maven-C71A36.svg?style=flat-square&logo=Apache%20Maven&logoColor=white" alt="Maven">
 	<img src="https://img.shields.io/badge/JSON-000000.svg?style=flat-square&logo=JSON&logoColor=white" alt="JSON">
-    <img src="https://img.shields.io/badge/JWT-black.svg?style=flat-square&logo=JSON%20web%20tokens&logoColor=white" alt="JWT">
-	<img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=flat-square&logo=docker&logoColor=white" alt="Docker">
+    <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=flat-square&logo=docker&logoColor=white" alt="Docker">
 	<img src="https://img.shields.io/badge/GitHub-181717.svg?style=flat-square&logo=GitHub&logoColor=white" alt="GitHub">
 </p>
 <hr>
